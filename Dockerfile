@@ -45,19 +45,23 @@ WORKDIR /home/user/red
 
 ######################################################
 ### The following lines are still here only for kind reminder (since console-gtk even if it compiles does not work properly)
-RUN git clone -b GTK https://github.com/rcqls/red.git
+RUN git clone -b GTK https://github.com/red/red.git
 WORKDIR /home/user/red/red
-ADD console-gtk.red /home/user/red/red/environment/console/CLI/console-gtk.red
-#USELESS: RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console.red"' | rebol +q -s
-#DOES NOT WORK: RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console-gtk.red"' | rebol +q -s
-## DO NOT PUT IN THE REPO: ADD console-gtk console-gtk
+ADD console-gtk.red /home/user/red/red/environment/console/CLI/console.red
+RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console.red"' | rebol +q -s
 ####################################################
 
 RUN wget https://toltex.u-ga.fr/users/RCqls/Red/console-gtk
 
+ADD red-compile /home/user/red/red/red-compile
+
 USER root
 
+RUN chmod u+x console && chown user:user console
+
 RUN chmod u+x console-gtk && chown user:user console-gtk
+
+RUN chmod u+x red-compile && chown user:user red-compile
 
 USER user
 

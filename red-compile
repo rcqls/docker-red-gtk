@@ -1,0 +1,4 @@
+#! /bin/bash
+
+redfile="$1"
+echo "Rebol[] do/args %/home/user/red/red/red.r \"-r %${redfile}\"" | rebol +q -s

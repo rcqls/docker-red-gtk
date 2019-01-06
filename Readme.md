@@ -57,22 +57,22 @@ and then launch `red-docker` instead.
 
 #### test container
 
-Inside the container,`console-gtk` is the binary to test the `red` console with `Needs: 'View` option activated. You could then try:
+Inside the container,`console` is the compiled binary (when `console-gtk` is the downloaded binary) to test the `red` console with `Needs: 'View` option activated. You could then try:
 
 ```{bash}
-console-gtk /home/user/red/red/tests/react-test.red
+console /home/user/red/red/tests/react-test.red
 ```
 
 or 
 
 ```{bash}
-console-gtk
+console
 ```
 
 or if `~/titi/toto.red` is a regular `red` file in the host systemfile
 
 ```{bash}
-console-gtk titi/toto.red
+console titi/toto.red
 ``` 
 
 ### Note for linux user
