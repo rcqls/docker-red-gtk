@@ -53,18 +53,17 @@ WORKDIR /home/user/red/red
 
 ADD console-gtk.red /home/user/red/red/environment/console/CLI/console-gtk.red
 
-RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console.red"' | rebol +q -s
+#USELESS: RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console.red"' | rebol +q -s
 
-RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console-gtk.red"' | rebol +q -s
+#DOES NOT WORK: RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console-gtk.red"' | rebol +q -s
 
-ADD console console-red
+ADD console-gtk console-gtk
 
 USER root
 
-RUN chmod u+x console-red && chown user:user console-red
+RUN chmod u+x console-gtk && chown user:user console-gtk
 
 USER user
-
 
 ENV PATH /home/user/red/red:$PATH
 
