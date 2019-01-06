@@ -73,7 +73,22 @@ or if `~/titi/toto.red` is a regular `red` file in the host systemfile
 
 ```{bash}
 console titi/toto.red
-``` 
+```
+
+## compile red file
+
+If `~/titi/toto.red` is a regular `red` file in the host systemfile, you can compile it:
+
+```{bash}
+red-compile titi/toto.red
+```
+
+In fact, `red-compile` is just a bash script containing 
+
+```{bash}
+redfile="$1"
+echo "Rebol[] do/args %/home/user/red/red/red.r \"-r %${redfile}\"" | rebol +q -s
+```
 
 ### Note for linux user
 
