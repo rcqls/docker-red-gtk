@@ -26,6 +26,8 @@ If you want to stop socat:
 pkill socat
 ```
 
+## For macOS user (and linux user)
+
 ### build image
 
 ```{bash}
@@ -35,7 +37,7 @@ docker build -t rcqls/red-gtk https://github.com/rcqls/docker-red-gtk.git
 ### use image
 
 ```{bash}
-docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0):0 rcqls/red-gtk
+docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0)$(ipconfig getifaddr en2):0 rcqls/red-gtk
 ```
 
 ### test container
@@ -49,12 +51,14 @@ console-gtk /home/user/red/red/tests/react-test.red
 or 
 
 ```{bash}
-console
+console-gtk
 ```
 
 or if `~/titi/toto.red` is a regular `red` file in the host systemfile
 
 ```{bash}
-console titi/toto.red
+console-gtk titi/toto.red
 ``` 
+## Note for linux user
 
+`console-gtk` binary can be downloaded directly [here](https://toltex.u-ga.fr/users/RCqls/Red/console-gtk)
