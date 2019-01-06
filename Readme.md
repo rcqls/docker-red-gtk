@@ -46,6 +46,15 @@ docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0)
 docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(/sbin/ip -o -4 addr list eno0 | awk '{print $4}' | cut -d/ -f1):0 rcqls/red-gtk
 ```
 
+**Rmk**: you can add this in your `.bash_profile`
+
+```{bash}
+## for masOS user
+alias red-docker="docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0)$(ipconfig getifaddr en2):0 rcqls/red-gtk"
+```
+
+and then launch `red-docker` instead.
+
 #### test container
 
 Inside the container,`console-gtk` is the binary to test the `red` console with `Needs: 'View` option activated. You could then try:
