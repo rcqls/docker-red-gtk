@@ -77,11 +77,35 @@ console titi/toto.red
 
 ## compile red file
 
+### host file
+
 If `~/titi/toto.red` is a regular `red` file in the host systemfile, you can compile it:
 
 ```{bash}
+## cd ~/work (if you change of working directory)
 red-compile titi/toto.red
 ```
+
+### guest file
+
+In the example above, the host systemfile  `~/titi/toto.red` is named in the container (guest systemfile)  `/home/user/work/titi/toto.red` and then be compiled to create `toto` binary
+
+```{bash}
+red-compile /home/user/work/titi/toto.red
+```
+
+One can also compile with a relative path
+
+```{bash}
+## to create the binary inside this folder
+cd /home/user/red/red/tests
+## compile the red file
+red-compile react-view.red
+## to execute the binary file
+react-view
+```
+
+### comment on `red-compile`
 
 In fact, `red-compile` is just a bash script containing 
 
@@ -89,6 +113,8 @@ In fact, `red-compile` is just a bash script containing
 redfile="$1"
 echo "Rebol[] do/args %/home/user/red/red/red.r \"-r %${redfile}\"" | rebol +q -s
 ```
+
+This script can be  extended to provide some similar usage provided by the `red` binary provided in the `red` website.
 
 ### Note for linux user
 
