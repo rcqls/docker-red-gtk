@@ -1,8 +1,10 @@
-## red/gtk for (macOS) docker
+## red/gtk for macOS and linux docker
 
-THis si a quick try to launch `red/gtk` in  
+THis si a quick try to launch `red/gtk` inside a  
 
-### install
+### requirement (for macOS user only)
+
+#### install
 
 Please, before installing, check that these tools are not yet installed
 
@@ -11,7 +13,7 @@ brew cask install docker # updates are then automatically managed
 brew cask install xquartz
 brew install socat
 ```
-### setup
+#### setup
 
 This setup allows any x-application provided by docker containers to launch 
 
@@ -26,21 +28,25 @@ If you want to stop socat:
 pkill socat
 ```
 
-## For macOS user (and linux user)
+### Managing image (for macOS and linux user)
 
-### build image
+#### build image
 
 ```{bash}
 docker build -t rcqls/red-gtk https://github.com/rcqls/docker-red-gtk.git
 ```
 
-### use image
+#### use image
 
 ```{bash}
+## for macOS user
 docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0)$(ipconfig getifaddr en2):0 rcqls/red-gtk
+
+## NOT TESTED: for linux user (change interface 'eno0' if necessary by checking `ifconfig`)
+docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(/sbin/ip -o -4 addr list eno0 | awk '{print $4}' | cut -d/ -f1):0 rcqls/red-gtk
 ```
 
-### test container
+#### test container
 
 Inside the container,`console-gtk` is the binary to test the `red` console with `Needs: 'View` option activated. You could then try:
 
@@ -59,6 +65,7 @@ or if `~/titi/toto.red` is a regular `red` file in the host systemfile
 ```{bash}
 console-gtk titi/toto.red
 ``` 
-## Note for linux user
+
+### Note for linux user
 
 `console-gtk` binary can be downloaded directly [here](https://toltex.u-ga.fr/users/RCqls/Red/console-gtk)
