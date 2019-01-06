@@ -29,5 +29,5 @@ pkill socat
 ### use
 
 ```{bash}
-docker run --rm  -ti  -e DISPLAY=$(ipconfig getifaddr en0):0 rcqls/red-gtk
+docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0):0 rcqls/red-gtk
 ```

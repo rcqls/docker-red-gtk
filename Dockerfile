@@ -20,10 +20,8 @@ RUN apt-get install -y dbus-x11:i386 strace
 
 RUN apt-get autoclean && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-
 RUN useradd -m user
 
-#RUN chown user:user /home/user
 
 RUN mkdir -p /var/run/dbus
 
@@ -43,21 +41,17 @@ RUN chmod u+x /home/user/rebol/releases/rebol-core/rebol
 
 RUN mkdir -p /home/user/red
 
-#VOLUME /red
-
 WORKDIR /home/user/red
 
+######################################################
+### The following lines are still here only for kind reminder (since console-gtk even if it compiles does not work properly)
 RUN git clone -b GTK https://github.com/rcqls/red.git
-
 WORKDIR /home/user/red/red
-
 ADD console-gtk.red /home/user/red/red/environment/console/CLI/console-gtk.red
-
 #USELESS: RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console.red"' | rebol +q -s
-
 #DOES NOT WORK: RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console-gtk.red"' | rebol +q -s
-
 ## DO NOT PUT IN THE REPO: ADD console-gtk console-gtk
+####################################################
 
 RUN wget https://toltex.u-ga.fr/users/RCqls/Red/console-gtk
 
@@ -68,5 +62,9 @@ RUN chmod u+x console-gtk && chown user:user console-gtk
 USER user
 
 ENV PATH /home/user/red/red:$PATH
+
+RUN mkdir /home/user/work
+
+WORKDIR /home/user/work
 
 CMD ["/bin/bash"]
