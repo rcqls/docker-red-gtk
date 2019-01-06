@@ -57,7 +57,9 @@ ADD console-gtk.red /home/user/red/red/environment/console/CLI/console-gtk.red
 
 #DOES NOT WORK: RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console-gtk.red"' | rebol +q -s
 
-ADD console-gtk console-gtk
+## DO NOT PUT IN THE REPO: ADD console-gtk console-gtk
+
+RUN wget https://toltex.u-ga.fr/users/RCqls/Red/console-gtk
 
 USER root
 
@@ -67,4 +69,4 @@ USER user
 
 ENV PATH /home/user/red/red:$PATH
 
-CMD ["console-gtk"]
+CMD ["/bin/bash"]
