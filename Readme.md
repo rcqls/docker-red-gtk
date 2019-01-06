@@ -26,13 +26,19 @@ If you want to stop socat:
 pkill socat
 ```
 
-### use
+### build image
+
+```{bash}
+docker build -t rcqls/red-gtk https://github.com/rcqls/docker-red-gtk.git
+```
+
+### use image
 
 ```{bash}
 docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0):0 rcqls/red-gtk
 ```
 
-### test
+### test container
 
 Inside the container,`console-gtk` is the binary to test the `red` console with `Needs: 'View` option activated. You could then try:
 
