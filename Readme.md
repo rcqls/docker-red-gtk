@@ -31,3 +31,24 @@ pkill socat
 ```{bash}
 docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0):0 rcqls/red-gtk
 ```
+
+### test
+
+Inside the container,`console-gtk` is the binary to test the `red` console with `Needs: 'View` option activated. You could then try:
+
+```{bash}
+console-gtk /home/user/red/red/tests/react-test.red
+```
+
+or 
+
+```{bash}
+console
+```
+
+or if `~/titi/toto.red` is a regular `red` file in the host systemfile
+
+```{bash}
+console titi/toto.red
+``` 
+
