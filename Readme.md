@@ -131,3 +131,7 @@ To test `red-gtk` with docker, you could try to adapt this using [x11docker](htt
 However, the best solution is maybe to consider [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 After installation, you have just to follow step by step the installation inside the `Dockerfile`.
+
+## Vagrant
+
+It is also possible to adapt of this previous docker installation by using [Vagrant](https://www.vagrantup.com) (VagrantFile to automate installation) with Virtual machine (like Virtualbox).
