@@ -122,4 +122,12 @@ This script can be  extended to provide some similar usage provided by the `red`
 
 ## For Windows user
 
-To test `red-gtk`, you could adapt this using [x11docker](https://github.com/mviereck/x11docker) but the best solution is maybe to consider [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+### docker
+
+To test `red-gtk` with docker, you could try to adapt this using [x11docker](https://github.com/mviereck/x11docker) 
+
+### Windows Subsystem for Linux (WSL)
+
+However, the best solution is maybe to consider [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+
+After installation, you have just to follow step by step the installation inside the `Dockerfile`.
