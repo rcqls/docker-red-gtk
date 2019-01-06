@@ -93,3 +93,7 @@ echo "Rebol[] do/args %/home/user/red/red/red.r \"-r %${redfile}\"" | rebol +q -
 ### Note for linux user
 
 `console-gtk` binary can be downloaded directly [here](https://toltex.u-ga.fr/users/RCqls/Red/console-gtk)
+
+## For Windows user
+
+To test `red-gtk`, you could adapt this using [x11docker](https://github.com/mviereck/x11docker) but the best solution is maybe to consider [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
