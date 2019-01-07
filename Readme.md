@@ -28,6 +28,15 @@ If you want to stop socat:
 pkill socat
 ```
 
+**NOTE:** to simplify these tasks, 
+
+* add this to your `~/.bash_profile`
+```{bash}
+alias socat-start="open -a Xquartz;socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\\\"$DISPLAY\\\" &"
+alias socat-stop="pkill socat"
+```
+* and start socat with `socat-start` and stop it with `socat-stop` 
+
 ### Managing image (for macOS and linux user)
 
 #### build image
@@ -46,7 +55,7 @@ docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0)
 docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(/sbin/ip -o -4 addr list eno0 | awk '{print $4}' | cut -d/ -f1):0 rcqls/red-gtk
 ```
 
-**Rmk**: you can add this in your `.bash_profile`
+**NOTE:**: you can add this in your `.bash_profile`
 
 ```{bash}
 ## for masOS user
