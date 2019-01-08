@@ -48,14 +48,14 @@ docker build -t rcqls/red-gtk https://github.com/rcqls/docker-red-gtk.git
 #### use image
 
 ```{bash}
-## for macOS user
-docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0)$(ipconfig getifaddr en2):0 rcqls/red-gtk
+## for macOS user (replace interface 'en0' below if necessary with the active one by checking `ifconfig`)
+docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0):0 rcqls/red-gtk
 
-## NOT TESTED: for linux user (change interface 'eno0' if necessary by checking `ifconfig`)
+## NOT TESTED: for linux user (replace interface 'eno0' with the active one if necessary by checking `ifconfig`)
 docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(/sbin/ip -o -4 addr list eno0 | awk '{print $4}' | cut -d/ -f1):0 rcqls/red-gtk
 ```
 
-**NOTE:**: you can add this in your `.bash_profile`
+**NOTE:**: you can add this bash function in your `.bash_profile`
 
 ```{bash}
 ## for masOS user
@@ -64,7 +64,7 @@ function red-docker {
 	ifaddr=""
 
 	if [ "$ifs" = "" ]; then
-		ifs="en0 en1 en2 eth0 eth1 eth2"
+		ifs="en0 en1 en2 eno0 eno1 eno2 eth0 eth1 eth2"
 	fi
 
 	for if in $ifs;do
