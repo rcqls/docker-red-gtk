@@ -59,7 +59,30 @@ docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(/sbin/ip -o -4 addr lis
 
 ```{bash}
 ## for masOS user
-alias red-docker="docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0)$(ipconfig getifaddr en2):0 rcqls/red-gtk"
+function red-docker {
+	ifs=$1
+	ifaddr=""
+
+	if [ "$ifs" = "" ]; then
+		ifs="en0 en1 en2 eth0 eth1 eth2"
+	fi
+
+	for if in $ifs;do
+		ifaddr=$(ipconfig getifaddr ${if})
+		if [ "$ifaddr" != "" ];then 
+			break
+		fi
+	done
+
+	if [ $ifaddr = "" ];then
+		echo "Error in red-docker: no IP address!"
+		exit
+	fi
+
+	echo "red-docker connected to ${ifaddr}:0"
+
+	docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=${ifaddr}:0 rcqls/red-gtk
+}
 ```
 
 and then launch `red-docker` instead.
