@@ -85,7 +85,7 @@ function red-docker {
 }
 ```
 
-and then launch `red-docker` instead.
+and then launch `red-docker` (or `red-docker en2` if you know the active interface) instead.
 
 #### test container
 
