@@ -42,7 +42,7 @@ alias socat-stop="pkill socat"
 #### build image
 
 ```{bash}
-docker build -t rcqls/red-gtk https://github.com/rcqls/docker-red-gtk.git
+docker build -t rcqls/red-gtk https://github.com/rcqls/docker-red-gtk.git#:/Distribs/Ubuntu
 ```
 
 #### use image
@@ -54,38 +54,6 @@ docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(ipconfig getifaddr en0)
 ## NOT TESTED: for linux user (replace interface 'eno0' with the active one if necessary by checking `ifconfig`)
 docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=$(/sbin/ip -o -4 addr list eno0 | awk '{print $4}' | cut -d/ -f1):0 rcqls/red-gtk
 ```
-
-**NOTE:**: you can add this bash function in your `.bash_profile`
-
-```{bash}
-## for masOS user
-function red-docker {
-	ifs=$1
-	ifaddr=""
-
-	if [ "$ifs" = "" ]; then
-		ifs="en0 en1 en2 eno0 eno1 eno2 eth0 eth1 eth2"
-	fi
-
-	for if in $ifs;do
-		ifaddr=$(ipconfig getifaddr ${if})
-		if [ "$ifaddr" != "" ];then 
-			break
-		fi
-	done
-
-	if [ $ifaddr = "" ];then
-		echo "Error in red-docker: no IP address!"
-		exit
-	fi
-
-	echo "red-docker connected to ${ifaddr}:0"
-
-	docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=${ifaddr}:0 rcqls/red-gtk
-}
-```
-
-and then launch `red-docker` (or `red-docker en2` if you know that `en2` is the active interface, for instance) instead.
 
 #### test container
 
@@ -147,6 +115,21 @@ echo "Rebol[] do/args %/home/user/red/red/red.r \"-r %${redfile}\"" | rebol +q -
 ```
 
 This script can be  extended to provide some similar usage provided by the `red` binary provided in the `red` website.
+
+### red-docker.sh for macOS user
+
+Download [red-docker-macOS.sh](https://raw.githubusercontent.com/rcqls/docker-red-gtk/master/script/red-docker-macOS.sh)
+ or [red-docker-linux.sh](https://raw.githubusercontent.com/rcqls/docker-red-gtk/master/script/red-docker-linux.sh)
+
+* Add it to `.bash_profile` (or similar)
+```
+## for macOS user (by replacing <path-red-docker-macOS-sh> properly)
+if [ -f "<path-red-docker-macOS-sh>/red-docker-macOS.sh" ];then . <path-red-docker-macOS-sh>/red-docker-macOS.sh; fi
+## for linux user
+## for linux user (by replacing <path-red-docker-linux-sh> properly)
+if [ -f "<path-red-docker-linux-sh>/red-docker-linux.sh" ];then . <path-red-docker-linux-sh>/red-docker-linux.sh; fi
+```
+* 
 
 ### Note for linux user
 

@@ -6,24 +6,24 @@ function red-docker {
 	fi
 
 	shift
-	cmd=$1
 
-	distrib="ubuntu"
-	if [ "$cmd" != "" ];then
-		distrib="$cmd"
-		case $distrib
+	distrib=""
+	if [ "$1" = "" ];then
+		distrib="ubuntu"
+	else
+		distrib="$1"
+		case $distrib in
 		# aliases
 		archlinux)
 			distrib="arch"
 			;;
 		esac
 		shift
-		cmd=$1
 	fi
 
 	container="rcqls/red-gtk-${distrib}"
 
-	case $cmd
+	case $cmd in
 	run)
 		ifs=$1
 		ifaddr=""
@@ -50,10 +50,10 @@ function red-docker {
 
 		;;
 	build)
-		
+
 		url="https://github.com/rcqls/docker-red-gtk.git#:Distribs"
 
-		case $distrib
+		case $distrib in
 		ubuntu)
 			url="${url}/Ubuntu"
 			;;
