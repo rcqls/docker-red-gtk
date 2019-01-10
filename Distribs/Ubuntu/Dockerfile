@@ -22,7 +22,6 @@ RUN apt-get autoclean && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache
 
 RUN useradd -m user
 
-
 RUN mkdir -p /var/run/dbus
 
 USER user
