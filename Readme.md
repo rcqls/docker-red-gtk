@@ -129,7 +129,14 @@ if [ -f "<path-red-docker-macOS-sh>/red-docker-macOS.sh" ];then . <path-red-dock
 ## for linux user (by replacing <path-red-docker-linux-sh> properly)
 if [ -f "<path-red-docker-linux-sh>/red-docker-linux.sh" ];then . <path-red-docker-linux-sh>/red-docker-linux.sh; fi
 ```
-* 
+* **For macOS user only**: 
+	* start socat: `red-docker start`
+	* stop socat: `red-docker stop`
+* Build the image: `red-docker build [ubuntu|arch]` (default image is ubuntu)
+	* ubuntu builds Ubuntu distrib
+	* arch builds Archlinux distrib
+* Run the container: `red-docker [run] [ubuntu|arch]`
+
 
 ### Note for linux user
 
