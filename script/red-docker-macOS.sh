@@ -17,6 +17,9 @@ function red-docker {
 		archlinux)
 			distrib="arch"
 			;;
+		cent)
+			distrib="centos"
+			;;
 		esac
 		shift
 	fi
@@ -44,7 +47,7 @@ function red-docker {
 			exit
 		fi
 
-		echo "red-docker connected to ${ifaddr}:0"
+		echo "red-docker container $container connected to DISPLAY ${ifaddr}:0"
 
 		docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=${ifaddr}:0 ${container}
 
@@ -60,6 +63,10 @@ function red-docker {
 		arch)
 			url="${url}/Archlinux"
 			distrib="arch"
+			;;
+		centos)
+			url="${url}/Centos"
+			distrib="centos"
 			;;
 		esac
 		docker build -t $container $url
