@@ -1,24 +1,10 @@
-FROM ubuntu
+FROM centos
 
 MAINTAINER "Cqls Team"
 
-RUN dpkg --add-architecture i386
+RUN yum install -y glibc.i686 libcurl.i686 gtk3.i686 wget git
 
-RUN apt-get update && apt-get install -y wget && apt-get install -y git
-
-RUN apt-get install -y libc6:i386 libcurl4:i386 
-
-RUN apt-get install -y libgtk-3-bin:i386 librsvg2-common:i386 libcanberra-gtk-module:i386 libcanberra-gtk3-module:i386 at-spi2-core:i386
-
-RUN apt-get install -y dbus-x11:i386 strace
-
-#RUN wget http://mirrors.kernel.org/ubuntu/pool/universe/libg/libgksu/libgksu2-0_2.0.13/home/userpre1-9ubuntu2_amd64.deb
-#RUN apt install -y ./libgksu2-0_2.0.13/home/userpre1-9ubuntu2_amd64.deb
-
-#RUN wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gksu/gksu_2.0.2-9ubuntu1_amd64.deb
-#RUN apt install -y  ./gksu_2.0.2-9ubuntu1_amd64.deb
-
-RUN apt-get autoclean && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+# RUN yum install -y dbus-x11.i686
 
 RUN useradd -m user
 

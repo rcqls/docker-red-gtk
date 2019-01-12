@@ -17,6 +17,9 @@ function red-docker {
 		archlinux)
 			distrib="arch"
 			;;
+		cent)
+			distrib="centos"
+			;;
 		esac
 		shift
 	fi
@@ -60,6 +63,10 @@ function red-docker {
 		arch)
 			url="${url}/Archlinux"
 			distrib="arch"
+			;;
+		centos)
+			url="${url}/Centos"
+			distrib="centos"
 			;;
 		esac
 		docker build -t $container $url

@@ -12,6 +12,8 @@ RUN pacman  --noconfirm -Syyu
 
 RUN pacman --noconfirm -S lib32-curl lib32-gtk3 git wget
 
+RUN pacman --noconfirm  -S lib32-libcurl-compat
+
 RUN useradd -m user
 
 RUN mkdir -p /var/run/dbus
@@ -39,7 +41,7 @@ WORKDIR /home/user/red
 RUN git clone -b GTK https://github.com/rcqls/red.git
 WORKDIR /home/user/red/red
 ADD console-gtk.red /home/user/red/red/environment/console/CLI/console.red
-RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console.red"' | rebol +q -s
+#DEVEL# RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console.red"' | rebol +q -s
 ####################################################
 
 RUN wget https://toltex.u-ga.fr/users/RCqls/Red/console-gtk
@@ -48,11 +50,7 @@ ADD red-compile /home/user/red/red/red-compile
 
 USER root
 
-RUN pacman --noconfirm -S at-spi2-core
-
-RUN pacman --noconfirm  -S lib32-libcurl-compat
-
-RUN chmod u+x console && chown user:user console
+#DEVEL# RUN chmod u+x console && chown user:user console
 
 RUN chmod u+x console-gtk && chown user:user console-gtk
 
