@@ -5,6 +5,7 @@ function docker-red {
 	container=""		# container name (default is rcqls/red-gtk-$distrib)
 	ifs=""				# to specifiy specific network interface(s)
 	debug="false"		# to echo output
+	build_folder=""		# build folder containing Dockerfile
 	# cmd declaration
 	cmd=""	
 	
@@ -19,6 +20,7 @@ function docker-red {
 			;;
 			--echo)
 				debug="true"
+				shift
 				;;
 			--root) # --root for red-compile 
 				shift
@@ -30,23 +32,34 @@ function docker-red {
 				distrib="$1"
 				case $distrib in
 					# aliases
-					u|ub)
+					ub)
 						distrib="ubuntu"
 						;;
-					a|ar|archlinux)
+					ar|archlinux)
 						distrib="arch"
 						;;
-					c|ce|cent)
+					ce|cent)
 						distrib="centos"
+						;;
+					al|alp)
+						distrib="alpine"
 						;;
 				esac
 				shift
-			;;
+				;;
+			--build-dir|--build-folder)
+				shift
+				build_folder=$1
+				if [ "$build_folder" = "local" ]; then build_folder="$HOME/Github/docker-red-gtk/Distribs"; fi
+				shift
+				;;
 			--cont|--container) # or directly the name of the container
+				shift
 				container=$1
 				shift
 				;;
 			--ifs) # to choose the address to connect DISPLAY
+				shift
 				ifs="$1"
 				shift
 				;;
@@ -61,6 +74,10 @@ function docker-red {
 			;;
 		esac
 	done
+
+	if [ "$debug" = "true" ]; then 
+		echo "<cmd=$cmd|build_folder=$build_folder>"
+	fi
 
 	if [ "$container" = "" ]; then container="rcqls/red-gtk-${distrib}"; fi
 
@@ -96,7 +113,7 @@ function docker-red {
 		if [ "$compile_root$compile_args" != "" ];then cmd="compile"; fi
 
 		echo "docker-red $cmd inside container $container connected to DISPLAY ${ifaddr}:0"
-		docker_run="docker run --rm  -ti -v ~/:/home/user/work  -e DISPLAY=${ifaddr}:0 ${container}"
+		docker_run="docker run --rm  -ti -v ~/:/home/user/work  -v /tmp:/tmp -e DISPLAY=${ifaddr}:0 ${container}"
 		if [ "$debug" = "true" ];then echo "run command: ${docker_run}"; fi
 		case $cmd in 
 			bash) 
@@ -120,25 +137,29 @@ function docker-red {
 	
 	build)
 
-		url="https://github.com/rcqls/docker-red-gtk.git#:Distribs"
+		if [ "$build_folder" = "" ]; then build_folder="https://github.com/rcqls/docker-red-gtk.git#:Distribs"; fi
 
 		case $distrib in
 		ubuntu)
-			url="${url}/Ubuntu"
+			build_folder="${build_folder}/Ubuntu"
 			;;
 		arch)
-			url="${url}/Archlinux"
+			build_folder="${build_folder}/Archlinux"
 			distrib="arch"
 			;;
 		centos)
-			url="${url}/Centos"
+			build_folder="${build_folder}/Centos"
 			distrib="centos"
+			;;
+		alpine)
+			build_folder="${build_folder}/Alpine"
+			distrib="alpine"
 			;;
 		esac
 		
-		echo "Docker red: building image $container..."
+		echo "Docker red: building image $container from $build_folder..."
 
-		docker build -t $container $url
+		docker build -t $container $build_folder
 		;;
 	service|services)
 		shift
@@ -160,7 +181,7 @@ function docker-red {
 					pkill socat
 					;;
 				esac
-				,,
+				;;
 		esac
 		;;
 	esac

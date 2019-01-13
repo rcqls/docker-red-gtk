@@ -17,6 +17,7 @@ brew install socat
 ### Main use (for macOS and linux user)
 
 1. Download [docker-red-init.sh](https://raw.githubusercontent.com/rcqls/docker-red-gtk/master/script/docker-red-init.sh)
+(TODO since not tested on linux: see [docker GUI for linux](https://medium.com/@SaravSun/running-gui-applications-inside-docker-containers-83d65c0db110) to fix DISPLAY on host since maybe `docker run` comment needs `--net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw"` options)
 1. Add it to `.bash_profile` (or similar)
 ```
 if [ -f "<path-docker-red-init-sh>/docker-red-init.sh" ];then . <path-docker-red-init-sh>/docker-red-init.sh; fi
