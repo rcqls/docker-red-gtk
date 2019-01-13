@@ -95,7 +95,7 @@ function docker-red {
 					ifaddr=$(ipconfig getifaddr ${if})
 				;;
 				linux*)
-					ifaddr=$(/sbin/ip -o -4 addr list ${if} 2> .ifaddr.error | awk '{print $4}' | cut -d/ -f1)
+					ifaddr=$(/sbin/ip -o -4 addr list ${if} > /dev/null 2>&1 | awk '{print $4}' | cut -d/ -f1)
 				;;
 			esac
 
@@ -170,7 +170,7 @@ function docker-red {
 				darwin*)
 					echo "Docker-red: starting socat service"
 					open -a Xquartz
-					socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
+					socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" > /dev/null 2>&1 &
 					;;
 				esac
 				;;
