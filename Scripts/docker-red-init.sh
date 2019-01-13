@@ -135,7 +135,7 @@ function docker-red {
 				redbin_guest="/home/user/work/.RedGTK"
 				shift
 				if [ -f "${redbin_host}/$1" ];then 
-					eval "$docker_run  ${redbin_guest}$*"
+					eval "$docker_run  ${redbin_guest}/$*"
 				else
 					eval "$docker_run  $*"
 				fi
