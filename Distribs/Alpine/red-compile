@@ -1,6 +1,17 @@
-#! /bin/bash
+#!/bin/bash
 
 redroot="/home/user/red/red"
+case $OSTYPE in
+	darwin*)
+		new_redroot="$HOME/Github/red"
+		if [ -d $new_redroot ]; then  redroot=$new_redroot; fi
+		;;
+	linux*)
+		new_redroot="$HOME/Github/red"
+		if [ -d $new_redroot ]; then  redroot=$new_redroot; fi
+	;;
+esac
+
 redargs="-r"
 redmv="false"
 
@@ -32,5 +43,6 @@ if [ "$redmv" = "true" ]; then
 	redbin="/home/user/work/.RedGTK"
 	basename=$(basename ${redfile})
 	mkdir -p $redbin
-	mv "${basename%.*}" $redbin/
+	redfilebin="${basename%.*}"
+	if [ -f $redfilebin ]; then mv $redfilebin $redbin/ ; fi
 fi

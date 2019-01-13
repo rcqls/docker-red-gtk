@@ -64,7 +64,6 @@ function docker-red {
 				shift
 				;;
 			-*) # argument for red-compile
-				shift
 				compile_args="$compile_args $1"
 				case $2 in
 					-*) # Nothing to do
@@ -84,13 +83,13 @@ function docker-red {
 	done
 
 	if [ "$debug" = "true" ]; then 
-		echo "<cmd=$cmd|build_folder=$build_folder>"
+		echo "<cmd=$cmd|root=$compile_root|args=$compile_args|build_folder=$build_folder>"
 	fi
 
 	if [ "$container" = "" ]; then container="rcqls/red-gtk-${distrib}"; fi
 
 	case $cmd in
-	bash|repl|exec|run|compile)
+	bash|repl|exec|run|compile|ls)
 		ifaddr=""
 
 		if [ "$ifs" = "" ]; then
@@ -123,21 +122,32 @@ function docker-red {
 		echo "docker-red $cmd inside container $container connected to DISPLAY ${ifaddr}:0"
 		docker_run="docker run --rm  -ti -v ~/:/home/user/work  -v /tmp:/tmp -e DISPLAY=${ifaddr}:0 ${container}"
 		if [ "$debug" = "true" ];then echo "run command: ${docker_run}"; fi
+		
+		redbin_host="${HOME}/.RedGTK"
+		redbin_guest="/home/user/work/.RedGTK"
+
 		case $cmd in 
 			bash) 
 				eval $docker_run
 				;;
 			repl)
-				eval "$docker_run console-gtk"
+				docker_repl="console-gtk"
+				if [ -f "$redbin_host/console-view" ]; then docker_repl="$redbin_guest/console-view"; fi
+				eval "$docker_run $docker_repl"
+				;;
+			ls)
+				eval "$docker_run ls $redbin_guest"
 				;;
 			exec|run)
-				redbin_host="${HOME}/.RedGTK"
-				redbin_guest="/home/user/work/.RedGTK"
 				shift
 				if [ -f "${redbin_host}/$1" ];then 
 					eval "$docker_run  ${redbin_guest}/$*"
-				else
-					eval "$docker_run  $*"
+				else 
+					if [ -f "${HOME}/$1" ];then
+						eval "$docker_run  $*"
+					else 
+						echo "Binary file ${HOME}/$1 does not exist..."
+					fi
 				fi
 				;;
 			compile)

@@ -1,8 +1,8 @@
-## red/gtk for macOS and linux docker
+# red/gtk for macOS and linux docker
 
 This project aims at executing commands related to `red/red:GTK` inside a linux docker container (running `red:GTK`with  Ubuntu, Archlinux or Centos distribution) from your host (macOS or linux).
 
-### Quick start
+## Quick start
 
 ### Requirement (for macOS user only)
 
@@ -16,7 +16,7 @@ brew install socat
 
 ### Main use (for macOS and linux user)
 
-1. Download [docker-red-init.sh](https://raw.githubusercontent.com/rcqls/docker-red-gtk/master/script/docker-red-init.sh)
+1. Download [docker-red-init.sh](https://raw.githubusercontent.com/rcqls/docker-red-gtk/master/Scripts/docker-red-init.sh)
 (TODO since not tested on linux: see [docker GUI for linux](https://medium.com/@SaravSun/running-gui-applications-inside-docker-containers-83d65c0db110) to fix DISPLAY on host since maybe `docker run` comment needs `--net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw"` options)
 1. Add it to `.bash_profile` (or similar)
 ```
@@ -33,14 +33,122 @@ if [ -f "<path-docker-red-init-sh>/docker-red-init.sh" ];then . <path-docker-red
 
 ### Tutorial
 
-TO COMPLETE SOON
+In this tutorial, I will assume that `~/Github/red` is the current `red/red:GTK` branch (`git clone -b GTK https://github.com/red/red `) and the host system is macOS.
 
+Notice that the script `red-compile` (which can be improved to be much closer to the official `red` binary, the main difference being that `red` binary does not require `red` source when `red-compile` does).
 
-### Alternative use (by hand)
+As a last comment, let us realize that `red/red:GTK` allows us to cross-compile `View` code on `linux`, `macOS` and `windows` from `linux`, `macOS` and `windows` (not tested on `Windows` yet). Thanks `Red Team` to provide this just amazing `red` language. 
+
+#### configuration (for macOS user only)
+
+Assuming that I have forked `rcqls/docker-red-gtk` at `~/Github/docker-red-gtk`, I add to the `~/.bash_profile`:
+
+```{bash}
+if [ -f "$HOME/Github/docker-red-gtk/Scripts/docker-red-init.sh" ];then . $HOME/Github/docker-red-gtk/Scripts/docker-red-init.sh; fi
+```
+
+Then you can easily build your `rcqls/red-gtk-ubuntu` image by openning a terminal:
+
+```{bash}
+## this is made automatically when openning a terminal
+. ~/.bash_profile # if terminal already open
+
+## create docker image 
+docker-red build
+
+## usual docker command (not necessary but here as a reminder)
+docker images # list of image
+docker ps # list of container (but no red-gtk container created yet)
+```
+That's it for preliminary settings to do **once**!
+
+As a complementary note, `docker-red`, as a development tool,  allows us to create other linux distribution docker images: Centos, Archlinux and Alpine (which has a small x11 issue). Alpine is an interesting image since it is the smallest in size (three times small than Ubuntu one's). Notice however that `rebol-core-278-4-2.tar.gz` is required when `rebol-core-278-4-3.tar.gz` is usually used.
+
+```{bash}
+## Do not run if not interested, only useful for testing tools!
+docker-red --dist centos build
+docker-red --dist arch build
+```
+
+#### Quick minimal use case: console inside the container 
+
+Before using `docker-red` to play with the usual console, macOS user has to execute socat `docker-red service start`. When this is done only once (TODO: make this automatically called when `docker-red` first used), we can play inside the linux container:
+
+```{bash}
+docker-red
+## then inside the container
+console # open a red console with `View` activated
+## inside the console
+view [button "hello"]
+```
+
+or directly
+
+```{bash}
+docker-red repl
+```
+
+#### compilation script inside guest from host
+
+Even if this can be changed later, a `red/red:GTK` branch is cloned inside the container at `home/user/red/red`. If `~/Github/red` (host system) does not exist, `home/user/red/red` is used to compile any red script using `red-compile` bash script. If `~/Github/red` exists in the host system, it is used (instead of `home/user/red/red`) inside the container which is mounted in the guest at `/home/user/work/Github/red`. Folder `~/Github/red` is of course easier to maintain.
+
+```{bash}
+## compilation
+docker-red compile Github/red/tests/react-test.red
+## to see binaries inside ~/.RedGTK which now contains react-test 
+docker-red ls 
+## to play with the newly creaty react-test
+docker-red run react-test 
+```
+#### compilation of console-view.red
+
+To get the latest console-view and run it
+```{bash}
+## optionnal: update your ~/Github/red repo (git pull)
+docker-red compile Github/red/environment/console/CLI/console-view.red
+## once console-view.red compiled it is then called by repl subcommand
+docker-red repl
+## inside the repl, test it
+view [button "hello"]
+```
+
+#### cross-compilation 
+
+Even it is completely useless, you can MAGICALLY cross-compile `react-test.red` for macOS (only if it is your OS) from the linux container (I am in love with this feature).
+
+```{bash}
+docker-red -t darwin -o console-view-macOS compile Github/red/environment/console/CLI/console-view.red 
+## console-view-macOS in your home directory `~/`
+./console-view-macOS
+## inside the repl
+view [button "hello"]
+```
+The arguments before `compile` subcommand are used for `red-compile` bash script inside container. Here because of `-t darwin`, cross-compilation is activated and
+`-o console-view-macOS` option provide the binary in the home directory (not copied inside `~/.RedGTK`).
+
+#### cross-compilation of console-view.red (docker-red not needed)
+
+As a macOS user and when developing and playing with `red/red:GTK` linux branch, I always forgot that I could cross-compile all the linux code from macOS thanks to the magic cross-compilation. For instance, I can compile `react-test.red` for linux without using the linux container.
+Here I will use the same bash script [red-compile](https://raw.githubusercontent.com/rcqls/docker-red-gtk/master/Scripts/red-compile)
+
+```{bash}
+## red-compile (~/Github/red) is hard linked to ~/bin (which is in my PATH) but you can download it (link above)
+red-compile --args "-t linux" Github/red/environment/console/CLI/console-view.red
+```
+
+To test it
+
+```{bash}
+docker-red repl
+## inside repl
+view [button "hello"] 
+```
+
+## How `docker-red` works (alternative settings step by step)
 
 This section is mainly provided to describe how the `docker-red` command works.
 
-#### setup service
+### setup service
 
 This setup allows any x-application provided by docker containers to launch 
 
@@ -55,7 +163,7 @@ If you want to stop socat:
 pkill socat
 ```
 
-#### managing image (for macOS and linux user)
+### managing image (for macOS and linux user)
 
 1. build image
 ```{bash}
@@ -111,6 +219,8 @@ redfile="$1"
 echo "Rebol[] do/args %/home/user/red/red/red.r \"-r %${redfile}\"" | rebol +q -s
 ```
 This script can be  extended to provide some similar usage provided by the `red` binary provided in the `red` website.
+
+## Some comments
 
 ### Note for linux user
 
