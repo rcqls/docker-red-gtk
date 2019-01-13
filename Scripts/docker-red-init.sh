@@ -66,6 +66,14 @@ function docker-red {
 			-*) # argument for red-compile
 				shift
 				compile_args="$compile_args $1"
+				case $2 in
+					-*) # Nothing to do
+					;;
+					*)
+						shift
+						if [ "$1" != "" ];then compile_args="$compile_args $1"; fi
+					;;
+				esac
 				shift
 			;;
 			*) # cmd is then a command
@@ -123,14 +131,20 @@ function docker-red {
 				eval "$docker_run console-gtk"
 				;;
 			exec|run)
+				redbin_host="${HOME}/.RedGTK"
+				redbin_guest="/home/user/work/.RedGTK"
 				shift
-				eval "$docker_run  $*"
+				if [ -f "${redbin_host}/$1" ];then 
+					eval "$docker_run  ${redbin_guest}$*"
+				else
+					eval "$docker_run  $*"
+				fi
 				;;
 			compile)
 				shift
 				if [ "$compile_args" = "" ]; then compile_args="-r"; fi
 				if [ "$compile_root" = "" ]; then compile_root="/home/user/red/red"; fi 
-				eval "$docker_run /bin/bash -e /home/user/red/red/red-compile --root $compile_root --args \"$compile_args\" $*" 
+				eval "$docker_run /bin/bash -e /home/user/red/red/red-compile --root $compile_root --args \"$compile_args\" --mv $*" 
 				;;
 		esac
 		;;

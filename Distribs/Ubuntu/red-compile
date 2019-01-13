@@ -2,6 +2,7 @@
 
 redroot="/home/user/red/red"
 redargs="-r"
+redmv="false"
 
 cmd=$1
 
@@ -19,5 +20,17 @@ if [ "$cmd" = "--args" ]; then
 	cmd=$1
 fi
 
+if [ "$cmd" = "--mv" ]; then
+	redmv="true"
+	shift
+	cmd=$1
+fi
+
 redfile="$cmd"
 echo "Rebol[] do/args %${redroot}/red.r \"${redargs} %${redfile}\"" | rebol +q -s
+if [ "$redmv" = "true" ]; then 
+	redbin="/home/user/work/.RedGTK"
+	basename=$(basename ${redfile})
+	mkdir -p $redbin
+	mv "${basename%.*}" $redbin/
+fi
