@@ -1,3 +1,6 @@
+## TODO: mode build start stop without run --rm
+## more adequate for running script without starting each time the container
+
 function docker-red {
 	compile_args=""		# --args for red-compile
 	compile_root=""		# --root for red-compile
@@ -6,6 +9,7 @@ function docker-red {
 	ifs=""				# to specifiy specific network interface(s)
 	debug="false"		# to echo output
 	build_folder=""		# build folder containing Dockerfile
+	build_opts=""		# build options
 	# cmd declaration
 	cmd=""	
 	
@@ -27,7 +31,7 @@ function docker-red {
 				compile_root="$1"
 				shift
 			;;
-			--dist|--distr|--distrib) # distrib container
+			--D|--dist|--distr|--distrib) # distrib container
 				shift
 				distrib="$1"
 				case $distrib in
@@ -35,13 +39,19 @@ function docker-red {
 					ub)
 						distrib="ubuntu"
 						;;
+					u86|ub86)
+						distrib="ubuntu-i386"
+						;;
 					ar|archlinux)
 						distrib="arch"
 						;;
 					ce|cent)
 						distrib="centos"
 						;;
-					al|alp)
+					c86|ce86|cent86)
+						distrib="centos-i386"
+						;;
+					al|alp|al86|alp86) #already i386
 						distrib="alpine"
 						;;
 				esac
@@ -51,6 +61,12 @@ function docker-red {
 				shift
 				build_folder=$1
 				if [ "$build_folder" = "local" ]; then build_folder="$HOME/Github/docker-red-gtk/Distribs"; fi
+				shift
+				;;
+			--build-opt|--build-opts)
+				shift
+				build_opts=$1
+				if [ "$build_opts" = "force" ]; then build_opts="--no-cache"; fi
 				shift
 				;;
 			--cont|--container) # or directly the name of the container
@@ -69,8 +85,10 @@ function docker-red {
 					-*) # Nothing to do
 					;;
 					*)
-						shift
-						if [ "$1" != "" ];then compile_args="$compile_args $1"; fi
+						if [ "$2" != "" ] && [ "$2" != "compile" ];then
+							shift 
+							compile_args="$compile_args $1"
+						fi
 					;;
 				esac
 				shift
@@ -121,18 +139,19 @@ function docker-red {
 
 		echo "docker-red $cmd inside container $container connected to DISPLAY ${ifaddr}:0"
 		docker_run="docker run --rm  -ti -v ~/:/home/user/work  -v /tmp:/tmp -e DISPLAY=${ifaddr}:0 ${container}"
-		if [ "$debug" = "true" ];then echo "run command: ${docker_run}"; fi
+		if [ "$debug" = "true" ];then echo "run $cmd command: ${docker_run}"; fi
 		
 		redbin_host="${HOME}/.RedGTK"
 		redbin_guest="/home/user/work/.RedGTK"
+
+		docker_repl="console-gtk"
+		if [ -f "$redbin_host/console-view" ]; then docker_repl="$redbin_guest/console-view"; fi
 
 		case $cmd in 
 			bash) 
 				eval $docker_run
 				;;
 			repl)
-				docker_repl="console-gtk"
-				if [ -f "$redbin_host/console-view" ]; then docker_repl="$redbin_guest/console-view"; fi
 				eval "$docker_run $docker_repl"
 				;;
 			ls)
@@ -140,13 +159,24 @@ function docker-red {
 				;;
 			exec|run)
 				shift
-				if [ -f "${redbin_host}/$1" ];then 
-					eval "$docker_run  ${redbin_guest}/$*"
+				filename=$1
+				if [ -f "${redbin_host}/$filename" ];then
+					run="$docker_run  ${redbin_guest}/$*"
+					if [ "$debug" = "true" ];then echo "run1: $run"; fi 
+					eval "$run"
 				else 
-					if [ -f "${HOME}/$1" ];then
-						eval "$docker_run  $*"
+					if [ -f "${HOME}/$filename" ];then
+						if [ "${filename##*.}" = "red" ];then
+							run="$docker_run $docker_repl $*"
+							if [ "$debug" = "true" ];then echo "run2: $run"; fi 
+							eval "$run"
+						else
+							run="$docker_run  $*"
+							if [ "$debug" = "true" ];then echo "run3: $run"; fi 
+							eval "$run"
+						fi
 					else 
-						echo "Binary file ${HOME}/$1 does not exist..."
+						echo "Binary file ${HOME}/$filename does not exist..."
 					fi
 				fi
 				;;
@@ -167,6 +197,10 @@ function docker-red {
 		ubuntu)
 			build_folder="${build_folder}/Ubuntu"
 			;;
+		ubuntu-i386)
+			build_folder="${build_folder}/Ubuntu-i386"
+			distrib="ubuntu-i386"
+			;;
 		arch)
 			build_folder="${build_folder}/Archlinux"
 			distrib="arch"
@@ -174,6 +208,10 @@ function docker-red {
 		centos)
 			build_folder="${build_folder}/Centos"
 			distrib="centos"
+			;;
+		centos-i386)
+			build_folder="${build_folder}/Centos-i386"
+			distrib="centos-i386"
 			;;
 		alpine)
 			build_folder="${build_folder}/Alpine"
@@ -183,7 +221,7 @@ function docker-red {
 		
 		echo "Docker red: building image $container from $build_folder..."
 
-		docker build -t $container $build_folder
+		docker build -t $container $build_opts $build_folder
 		;;
 	service|services)
 		shift

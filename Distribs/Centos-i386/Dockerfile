@@ -1,19 +1,10 @@
-FROM i386/alpine:edge
+FROM i386/centos
 
 MAINTAINER "Cqls Team"
 
+RUN yum install -y glibc libcurl gtk3 wget git
 
-RUN apk add --no-cache bash
-
-RUN apk add --no-cache libcurl git wget dbus
-
-RUN apk add --no-cache apk-gtk-gtk3 util-linux
-
-RUN apk add --no-cache libc6-compat
-
-RUN adduser -S -u 1000 user && addgroup -g 1000 user
-
-RUN dbus-uuidgen > /var/lib/dbus/machine-id
+RUN useradd -m user
 
 RUN mkdir -p /var/run/dbus
 
@@ -23,9 +14,9 @@ RUN mkdir -p /home/user/rebol
 
 WORKDIR /home/user/rebol
 
-RUN wget http://www.rebol.com/downloads/v278/rebol-core-278-4-2.tar.gz
+RUN wget http://www.rebol.com/downloads/v278/rebol-core-278-4-3.tar.gz
 
-RUN tar xzvf rebol-core-278-4-2.tar.gz
+RUN tar xzvf rebol-core-278-4-3.tar.gz
 
 ENV PATH /home/user/rebol/releases/rebol-core:$PATH
 
@@ -37,7 +28,7 @@ WORKDIR /home/user/red
 
 ######################################################
 ### The following lines are still here only for kind reminder (since console-gtk even if it compiles does not work properly)
-RUN git clone -b GTK https://github.com/rcqls/red.git
+RUN git clone -b GTK https://github.com/red/red.git
 WORKDIR /home/user/red/red
 ADD console-gtk.red /home/user/red/red/environment/console/CLI/console.red
 #DEVEL# RUN echo 'Rebol[] do/args %red.r "-r %environment/console/CLI/console.red"' | rebol +q -s

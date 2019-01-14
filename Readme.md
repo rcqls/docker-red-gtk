@@ -4,7 +4,9 @@ This project aims at executing commands related to `red/red:GTK` inside a linux 
 
 ## Quick start
 
-### Requirement (for macOS user only)
+### Requirement 
+
+#### for macOS user
 
 Please, before installing, check that these tools are not yet installed
 
@@ -13,6 +15,10 @@ brew cask install docker # updates are then automatically managed
 brew cask install xquartz
 brew install socat
 ```
+
+#### for linux user (64bit only)
+
+Just install docker (as a linux user you know what to do depending of your linux distribution).
 
 ### Main use (for macOS and linux user)
 
@@ -62,7 +68,7 @@ docker ps # list of container (but no red-gtk container created yet)
 ```
 That's it for preliminary settings to do **once**!
 
-As a complementary note, `docker-red`, as a development tool,  allows us to create other linux distribution docker images: Centos, Archlinux and Alpine (which has a small x11 issue). Alpine is an interesting image since it is the smallest in size (three times small than Ubuntu one's). Notice however that `rebol-core-278-4-2.tar.gz` is required when `rebol-core-278-4-3.tar.gz` is usually used.
+As a complementary note, `docker-red`, as a development tool,  allows us to create other linux distribution docker images: Centos, Archlinux and Alpine (which has a small x11 issue). Alpine is an interesting image since it is the smallest in size (three times smaller than Ubuntu one's). Notice however that for Alpine `rebol-core-278-4-2.tar.gz` is required when `rebol-core-278-4-3.tar.gz` is usually used.
 
 ```{bash}
 ## Do not run if not interested, only useful for testing tools!
