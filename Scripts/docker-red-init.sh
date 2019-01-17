@@ -22,7 +22,7 @@ function docker-red {
 				docker-red-help
 				return
 			;;
-			--echo|)
+			--echo)
 				debug="true"
 				shift
 				;;
