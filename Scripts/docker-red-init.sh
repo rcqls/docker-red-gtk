@@ -22,7 +22,7 @@ function docker-red {
 				docker-red-help
 				return
 			;;
-			--echo)
+			--echo|)
 				debug="true"
 				shift
 				;;
@@ -31,7 +31,7 @@ function docker-red {
 				compile_root="$1"
 				shift
 			;;
-			--D|--dist|--distr|--distrib) # distrib container
+			-D|--D|--dist|--distr|--distrib) # distrib container
 				shift
 				distrib="$1"
 				case $distrib in
@@ -111,13 +111,13 @@ function docker-red {
 		ifaddr=""
 
 		if [ "$ifs" = "" ]; then
-			ifs="en0 en1 en2 eno0 eno1 eno2 eth0 eth1 eth2"
+			ifs="docker0 eno0 eno1 eno2 eth0 eth1 eth2" # docker0 is for linux
 		fi
 
 		for if in $ifs;do
 			case $OSTYPE in
 				darwin*)
-					ifaddr=$(ipconfig getifaddr ${if})
+					ifaddr="host.docker.internal" # macOS ONLY! # OLD $(ipconfig getifaddr ${if})
 				;;
 				linux*)
 					ifaddr=$(/sbin/ip -o -4 addr list ${if} > /dev/null 2>&1 | awk '{print $4}' | cut -d/ -f1)
@@ -129,9 +129,9 @@ function docker-red {
 			fi
 		done
 
-		if [ $ifaddr = "" ];then
-			echo "Error in red-docker: no IP address!"
-			return
+		if [ "$ifaddr" = "" ];then
+			echo "Error in docker-red: no IP address!"
+			exit
 		fi
 
 		# if compile_args non-empty bash becomes compile
