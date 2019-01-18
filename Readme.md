@@ -142,6 +142,13 @@ Here I will use the same bash script [red-compile](https://raw.githubusercontent
 red-compile --args "-t linux" Github/red/environment/console/CLI/console-view.red
 ```
 
+or with the new script [reds](https://raw.githubusercontent.com/rcqls/docker-red-gtk/master/Scripts/reds)
+where "reds" stands for **red** from **s**ource) to compile project with **reds** files:
+
+```{bash}
+red-compile -t linux Github/red/environment/console/CLI/console-view.red
+```
+
 To test it
 
 ```{bash}
@@ -149,6 +156,8 @@ docker-red repl
 ## inside repl
 view [button "hello"] 
 ```
+
+Notice that `reds` (or `red-compile`) can be used instead the usual `red` binary in development mode since `--root` (which defaults to `~/Github/red`) can be specified to compile the red file form thus root folder.
 
 ## How `docker-red` works (alternative settings step by step)
 
