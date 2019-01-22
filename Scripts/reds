@@ -7,16 +7,25 @@ redmv=""
 debug=""
 
 ## default depending on state an OS
-case $OSTYPE in
-	darwin*)
-		new_redroot="$HOME/Github/red"
-		if [ -d $new_redroot ]; then  redroot=$new_redroot; fi
-		;;
-	linux*)
-		new_redroot="$HOME/Github/red"
-		if [ -d $new_redroot ]; then  redroot=$new_redroot; fi
-	;;
-esac
+# case $OSTYPE in
+# 	darwin*)
+# 		new_redroot="$HOME/Github/red"
+# 		if [ -d $new_redroot ]; then  redroot=$new_redroot; fi
+# 		;;
+# 	linux*)
+# 		new_redroot="$HOME/Github/red"
+# 		if [ -d $new_redroot ]; then  redroot=$new_redroot; fi
+# 	;;
+# esac
+
+new_redroot=""
+if [ -f "red.r" ] && [ -f "compiler.r" ] && [ -d "environment/console" ];then
+	new_redroot="$(pwd)"
+elif [ -d "$HOME/Github/red" ]; then
+	new_redroot="$HOME/Github/red"
+fi
+
+if [ "$new_redroot" != "" ];then redroot=$new_redroot; fi
 
 
 # cmd declaration
