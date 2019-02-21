@@ -48,6 +48,9 @@ function docker-red {
 					disco86)
 						distrib="ubuntu-disco-i386"
 						;;
+					cosmic86)
+						distrib="ubuntu-cosmic-i386"
+						;;
 					ar|archlinux)
 						distrib="arch"
 						;;
@@ -217,6 +220,10 @@ function docker-red {
 		ubuntu-disco-i386)
 			build_folder="${build_folder}/Ubuntu-disco-i386"
 			distrib="ubuntu-disco-i386"
+			;;
+		ubuntu-cosmic-i386)
+			build_folder="${build_folder}/Ubuntu-cosmic-i386"
+			distrib="ubuntu-cosmic-i386"
 			;;
 		arch)
 			build_folder="${build_folder}/Archlinux"
