@@ -39,6 +39,9 @@ function docker-red {
 					ub)
 						distrib="ubuntu"
 						;;
+					disco)
+						distrib="ubuntu-disco"
+						;;
 					u86|ub86)
 						distrib="ubuntu-i386"
 						;;
@@ -202,6 +205,10 @@ function docker-red {
 		case $distrib in
 		ubuntu)
 			build_folder="${build_folder}/Ubuntu"
+			;;
+		ubuntu-disco)
+			build_folder="${build_folder}/Ubuntu-disco"
+			distrib="ubuntu-disco"
 			;;
 		ubuntu-i386)
 			build_folder="${build_folder}/Ubuntu-i386"
