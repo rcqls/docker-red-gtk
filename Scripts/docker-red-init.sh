@@ -42,8 +42,14 @@ function docker-red {
 					u86|ub86)
 						distrib="ubuntu-i386"
 						;;
+					disco86)
+						distrib="ubuntu-disco-i386"
+						;;
 					ar|archlinux)
 						distrib="arch"
+						;;
+					m8|ma86)
+						distrib="manjaro-i386"
 						;;
 					ce|cent)
 						distrib="centos"
@@ -201,9 +207,17 @@ function docker-red {
 			build_folder="${build_folder}/Ubuntu-i386"
 			distrib="ubuntu-i386"
 			;;
+		ubuntu-disco-i386)
+			build_folder="${build_folder}/Ubuntu-disco-i386"
+			distrib="ubuntu-disco-i386"
+			;;
 		arch)
 			build_folder="${build_folder}/Archlinux"
 			distrib="arch"
+			;;
+		manjaro-i386)
+			build_folder="${build_folder}/Manjaro-i386"
+			distrib="manjaro-i386"
 			;;
 		centos)
 			build_folder="${build_folder}/Centos"
