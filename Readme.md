@@ -146,7 +146,7 @@ or with the new script [reds](https://raw.githubusercontent.com/rcqls/docker-red
 where "reds" stands for **red** from **s**ource) to compile project with **reds** files:
 
 ```{bash}
-red-compile -t linux Github/red/environment/console/CLI/console-view.red
+reds -t linux Github/red/environment/console/CLI/console-view.red
 ```
 
 To test it
