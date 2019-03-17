@@ -1,22 +1,12 @@
-FROM i386/ubuntu:disco
-
+FROM i386/debian
 MAINTAINER "Cqls Team"
 
 RUN apt-get update && apt-get install -y wget && apt-get install -y git
 
 RUN apt-get install -y libc6 libcurl4 
 
-RUN apt-get --fix-missing update
+RUN apt-get install -y apt install efl
 
-RUN apt-get install -y software-properties-common
-
-RUN add-apt-repository ppa:niko2040/e19
-
-RUN apt-get update
-
-RUN apt-get install -y apt install libelementary2
-
-RUN apt-get install -y dbus-x11 strace
 
 RUN apt-get autoclean && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
