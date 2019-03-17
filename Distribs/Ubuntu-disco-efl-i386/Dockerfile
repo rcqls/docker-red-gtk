@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y wget && apt-get install -y git
 
 RUN apt-get install -y libc6 libcurl4 
 
-RUN apt-get -y install software-properties-common
+RUN apt-get install -y software-properties-common python-software-properties
 
 RUN add-apt-repository ppa:ppa:niko2040/e19
 
