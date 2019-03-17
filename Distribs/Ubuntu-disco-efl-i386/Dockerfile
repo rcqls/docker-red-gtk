@@ -2,6 +2,8 @@ FROM i386/ubuntu:disco
 
 MAINTAINER "Cqls Team"
 
+RUN apt-get -y install software-properties-common
+
 RUN add-apt-repository ppa:ppa:niko2040/e19
 
 RUN apt-get update && apt-get install -y wget && apt-get install -y git
