@@ -7,6 +7,7 @@ RUN apt-get install -y libc6 libcurl4
 
 RUN apt-get install -y libelementary1
 
+RUN apt-get install -y dbus-x11 strace
 
 RUN apt-get autoclean && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
