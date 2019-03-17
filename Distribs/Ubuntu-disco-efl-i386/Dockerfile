@@ -2,13 +2,15 @@ FROM i386/ubuntu:disco
 
 MAINTAINER "Cqls Team"
 
+RUN apt-get update && apt-get install -y wget && apt-get install -y git
+
+RUN apt-get install -y libc6 libcurl4 
+
 RUN apt-get -y install software-properties-common
 
 RUN add-apt-repository ppa:ppa:niko2040/e19
 
-RUN apt-get update && apt-get install -y wget && apt-get install -y git
-
-RUN apt-get install -y libc6 libcurl4 
+RUN apt-get update
 
 RUN apt-get install -y apt install libelementary2
 
