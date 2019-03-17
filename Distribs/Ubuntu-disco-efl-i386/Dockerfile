@@ -10,7 +10,7 @@ RUN apt-get --fix-missing update
 
 RUN apt-get install -y software-properties-common
 
-RUN add-apt-repository ppa:ppa:niko2040/e19
+RUN add-apt-repository ppa:niko2040/e19
 
 RUN apt-get update
 
