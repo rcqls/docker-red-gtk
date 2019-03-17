@@ -5,9 +5,7 @@ RUN apt-get update && apt-get install -y wget && apt-get install -y git
 
 RUN apt-get install -y libc6 libcurl4 
 
-RUN apt-src update 
-
-RUN apt-src install -y apt install efl
+RUN apt-get install -y efl
 
 
 RUN apt-get autoclean && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
