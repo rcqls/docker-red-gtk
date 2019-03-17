@@ -1,4 +1,4 @@
-FROM i386/debian
+FROM i386/debian:sid
 MAINTAINER "Cqls Team"
 
 RUN apt-get update && apt-get install -y wget && apt-get install -y git
