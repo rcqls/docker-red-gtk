@@ -11,6 +11,17 @@ RUN apt-get install -y libgtk-3-bin librsvg2-common libcanberra-gtk-module  libc
 
 RUN apt-get install -y dbus-x11 strace
 
+RUN apt-get install -y \
+	git autoconf automake meson ninja-build pkg-config parallel ruby-sass sassc optipng \
+	inkscape \
+	libgtk-3-dev libgdk-pixbuf2.0-dev libglib2.0-dev libglib2.0-bin \
+	libxml2-utils librsvg2-dev \
+	gnome-themes-standard gtk2-engines-murrine gtk2-engines-pixbuf libcanberra-gtk3-module \
+	fonts-roboto-hinted fonts-noto-hinted
+
+
+RUN apt-get remove -y numix-gtk-theme
+
 RUN apt-get autoclean && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 RUN useradd -m user
@@ -46,6 +57,8 @@ ADD console-gtk.red /home/user/red/red/environment/console/CLI/console.red
 RUN wget https://toltex.u-ga.fr/users/RCqls/Red/console-gtk
 
 ADD red-compile /home/user/red/red/red-compile
+
+RUN git clone https://github.com/tliron/install-gnome-themes /home/user/install-gnome-themes
 
 USER root
 
