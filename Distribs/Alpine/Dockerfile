@@ -1,4 +1,5 @@
-FROM i386/alpine:edge
+FROM i386/alpine:20191114
+
 
 MAINTAINER "Cqls Team"
 
