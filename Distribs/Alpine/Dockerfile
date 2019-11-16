@@ -7,7 +7,7 @@ RUN apk add --no-cache bash
 
 RUN apk add --no-cache libcurl git wget dbus
 
-RUN apk add --no-cache apk-gtk-gtk3 util-linux
+RUN apk add --no-cache gtk+3.0 util-linux
 
 RUN apk add --no-cache libc6-compat
 
@@ -53,7 +53,7 @@ USER root
 
 ### RUN chmod u+x console-gtk && chown user:user console-gtk
 
-RUN chmod u+x red-compile && chown user:user red-compile
+### RUN chmod u+x red-compile && chown user:user red-compile
 
 USER user
 
